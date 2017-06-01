@@ -10,9 +10,13 @@ urlpatterns=[
     url(r'^register/$',views.register),
     url(r'^register_checkname(\w+)/$',views.register_checkname),
     url(r'^register_submit/$',views.register_submit),
+    url(r'^logout/$',views.logout),
     url(r'^status_check/$',views.status_check),
     url(r'^usercenter_info/$',views.usercenter_info),
     url(r'^usercenter_order/$',views.usercenter_order),
+    url(r'^usercenter_site/$',views.usercenter_site),
+    url(r'^usercenter_addrsave/$',views.usercenter_addrsave),
+
 
 
 ]

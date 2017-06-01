@@ -6,6 +6,7 @@
 	<link rel="stylesheet" type="text/css" href="/static/css/reset.css">
 	<link rel="stylesheet" type="text/css" href="/static/css/main.css">
     <script type="text/javascript" src="/static/js/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="/static/js/addrsave.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
            $.get('/fe_user/status_check/',function (reply) {
@@ -14,6 +15,7 @@
                    $('.login_btn').hide();
                    $('.login_info em').html(reply.username);
                    $('.login_info').show();
+                   $('.user_link .logout').show();
                }
            });
         });
@@ -28,17 +30,19 @@
 					欢迎您：<em>张 山</em>
 				</div>
 				<div class="login_btn fl">
-					<a href="login.html">登录</a>
+					<a href="/fe_user/login/">登录</a>
 					<span>|</span>
-					<a href="register.html">注册</a>
+					<a href="/fe_user/register/">注册</a>
 				</div>
 				<div class="user_link fl">
 					<span>|</span>
-					<a href="user_center_info.html">用户中心</a>
+					<a href="/fe_user/usercenter_info/">用户中心</a>
 					<span>|</span>
 					<a href="cart.html">我的购物车</a>
 					<span>|</span>
-					<a href="user_center_order.html">我的订单</a>
+					<a href="/fe_user/usercenter_order/">我的订单</a>
+                    <span class="logout">|</span>
+                    <a href="/fe_user/logout/" class="logout">注销</a>
 				</div>
 			</div>
 		</div>		
@@ -67,35 +71,34 @@
 				<div class="site_con">
 					<dl>
 						<dt>当前地址：</dt>
-						<dd>北京市 海淀区 东北旺西路8号中关村软件园 （李思 收） 182****7528</dd>
+						<dd>{{ address }}&nbsp;&nbsp;{{ addressee }}&nbsp;&nbsp;{{ telephone }}</dd>
 					</dl>					
 				</div>
 				<h3 class="common_title2">编辑地址</h3>
 				<div class="site_con">
-					<form>
+					<form method="post" action="/fe_user/usercenter_addrsave/">
+                        {% csrf_token %}
 						<div class="form_group">
 							<label>收件人：</label>
-							<input type="text" name="">
+							<input type="text" name="addressee" class="addressee">
 						</div>
 						<div class="form_group form_group2">
 							<label>详细地址：</label>
-							<textarea class="site_area"></textarea>
+							<textarea class="site_area" name="address"></textarea>
 						</div>
 						<div class="form_group">
 							<label>邮编：</label>
-							<input type="text" name="">
+							<input type="text" name="postcode" class="postcode">
 						</div>
 						<div class="form_group">
 							<label>手机：</label>
-							<input type="text" name="">
+							<input type="text" name="telephone" class="telephone">
 						</div>
 						<input type="submit" name="" value="提交" class="info_submit">
 					</form>
 				</div>
 		</div>
 	</div>
-
-
 
 	<div class="footer">
 		<div class="foot_link">

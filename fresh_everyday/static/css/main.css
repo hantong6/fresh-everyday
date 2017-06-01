@@ -36,6 +36,10 @@ html,body{height:100%}
 	margin:0 10px;
 }
 
+.user_link .logout
+{
+	display:none;
+}
 
 /* logo、搜索框、购物车样式 */
 

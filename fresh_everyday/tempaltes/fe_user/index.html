@@ -16,6 +16,7 @@
                    $('.login_btn').hide();
                    $('.login_info em').html(reply.username);
                    $('.login_info').show();
+                   $('.user_link .logout').show();
                }
            });
         });
@@ -41,6 +42,8 @@
 					<a href="cart.html">我的购物车</a>
 					<span>|</span>
 					<a href="/fe_user/usercenter_order/">我的订单</a>
+                    <span class="logout">|</span>
+                    <a href="/fe_user/logout/" class="logout">注销</a>
 				</div>
 			</div>
 		</div>		

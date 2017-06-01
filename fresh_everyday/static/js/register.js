@@ -42,7 +42,7 @@ $(function(){
 		var len = $('#user_name').val().length;
 		if(len<5||len>20)
 		{
-			$('#user_name').next().html('请输入5-20个字符的用户名')
+			$('#user_name').next().html('请输入5-20个字符的用户名');
 			$('#user_name').next().show();
 			error_name = true;
 		}
@@ -69,7 +69,7 @@ $(function(){
 		var len = $('#pwd').val().length;
 		if(len<8||len>20)
 		{
-			$('#pwd').next().html('密码最少8位，最长20位')
+			$('#pwd').next().html('密码最少8位，最长20位');
 			$('#pwd').next().show();
 			error_password = true;
 		}
@@ -87,7 +87,7 @@ $(function(){
 
 		if(pass!=cpass)
 		{
-			$('#cpwd').next().html('两次输入的密码不一致')
+			$('#cpwd').next().html('两次输入的密码不一致');
 			$('#cpwd').next().show();
 			error_check_password = true;
 		}
@@ -109,7 +109,7 @@ $(function(){
 		}
 		else
 		{
-			$('#email').next().html('你输入的邮箱格式不正确')
+			$('#email').next().html('你输入的邮箱格式不正确');
 			$('#email').next().show();
 			error_check_password = true;
 		}
@@ -131,6 +131,6 @@ $(function(){
 		{
 			return false;
 		}
-
 	});
-})
+
+});
