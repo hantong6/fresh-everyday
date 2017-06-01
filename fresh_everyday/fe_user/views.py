@@ -3,6 +3,7 @@ from django.shortcuts import render,redirect
 from django.http import JsonResponse,HttpResponse,HttpResponseRedirect
 from hashlib import sha1
 from models import *
+from decoration import *
 
 # Create your views here.
 
@@ -44,7 +45,12 @@ def login_submit(request):
     userName=request.POST.get('username')
     userPasswd=request.POST.get('pwd')
     userMark=request.POST.get('usermark')
-    response=redirect('/')
+    if request.COOKIES.has_key('url'):
+        url=request.COOKIES['url']
+        response=redirect(url)
+        response.set_cookie('url','',max_age=-1)
+    else:
+        response=redirect('/')
     if userMark=='on':
         response.set_cookie('username',userName)
     request.session['username']=userName
@@ -85,29 +91,23 @@ def status_check(request):
     reply={"username":username}
     return JsonResponse(reply)
 
+@jumptologin
 def usercenter_info(request):
-    username=request.session.get('username','nobody')
-    if username=='nobody':
-        return redirect('/fe_user/login/')
+    username=request.session.get('username')
+    curUser=UserInfo.objects.get(name=username)
+    if curUser.address=='':
+        context={"name":curUser.name,"telephone":'还没有您的联系方式，请在收货地址栏添加！',"address":'还没有您的联系地址，请在收货地址栏添加！'}
     else:
-        curUser=UserInfo.objects.get(name=username)
-        if curUser.address=='':
-            context={"name":curUser.name,"telephone":'还没有您的联系方式，请在收货地址栏添加！',"address":'还没有您的联系地址，请在收货地址栏添加！'}
-        else:
-            context={"name":curUser.name,"telephone":curUser.telephone,"address":curUser.address}
-        return render(request,'./fe_user/user_center_info.html',context)
+        context={"name":curUser.name,"telephone":curUser.telephone,"address":curUser.address}
+    return render(request,'./fe_user/user_center_info.html',context)
 
+@jumptologin
 def usercenter_order(request):
-    username=request.session.get('username','nobody')
-    if username=='nobody':
-        return redirect('/fe_user/login/')
-    else:
-        return render(request,'./fe_user/user_center_order.html')
+    return render(request,'./fe_user/user_center_order.html')
 
+@jumptologin
 def usercenter_site(request):
-    username = request.session.get('username', 'nobody')
-    if username=='nobody':
-        return redirect('/fe_user/login/')
+    username = request.session.get('username')
     curUser = UserInfo.objects.get(name=username)
     if curUser.address=='':
         context={"addressee":"您尚未保存任何收货地址，请添加！","telephone":'',"address":''}
