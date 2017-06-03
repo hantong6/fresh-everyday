@@ -40,15 +40,15 @@
 					<a href="cart.html">我的购物车</a>
 					<span>|</span>
 					<a href="/fe_user/usercenter_order/">我的订单</a>
-                    <span class="logout">|</span>
-                    <a href="/fe_goods/logout&detail/" class="logout">注销</a>
+            <span class="logout">|</span>
+            <a href="/fe_user/logout/" class="logout">注销</a>
 				</div>
 			</div>
 		</div>		
 	</div>
 
 	<div class="search_bar clearfix">
-		<a href="index.html" class="logo fl"><img src="/static/images/logo.png"></a>
+		<a href="/" class="logo fl"><img src="/static/images/logo.png"></a>
 		<div class="search_con fl">
 			<input type="text" class="input_text fl" name="" placeholder="搜索商品">
 			<input type="button" class="input_btn fr" name="" value="搜索">
@@ -65,12 +65,12 @@
 				<h1>全部商品分类</h1>	
 				<span></span>			
 				<ul class="subnav">
-					<li><a href="/fe_goods/list/" class="fruit">新鲜水果</a></li>
-					<li><a href="/fe_goods/list/" class="seafood">海鲜水产</a></li>
-					<li><a href="/fe_goods/list/" class="meet">猪牛羊肉</a></li>
-					<li><a href="/fe_goods/list/" class="egg">禽类蛋品</a></li>
-					<li><a href="/fe_goods/list/" class="vegetables">新鲜蔬菜</a></li>
-					<li><a href="/fe_goods/list/" class="ice">速冻食品</a></li>
+					<li><a href="/fe_goods/list1-1-0/" class="fruit">新鲜水果</a></li>
+					<li><a href="/fe_goods/list2-1-0/" class="seafood">海鲜水产</a></li>
+					<li><a href="/fe_goods/list3-1-0/" class="meet">猪牛羊肉</a></li>
+					<li><a href="/fe_goods/list4-1-0/" class="egg">禽类蛋品</a></li>
+					<li><a href="/fe_goods/list5-1-0/" class="vegetables">新鲜蔬菜</a></li>
+					<li><a href="/fe_goods/list6-1-0/" class="ice">速冻食品</a></li>
 				</ul>
 			</div>
 			<ul class="navlist fl">
@@ -86,20 +86,20 @@
 	<div class="breadcrumb">
 		<a href="/">全部分类</a>
 		<span>></span>
-		<a href="/fe_goods/list/">新鲜水果</a>
+		<a href="/fe_goods/list{{ category_id }}-1-0/">{{ category }}</a>
 		<span>></span>
 		<a href="#">商品详情</a>
 	</div>
 
 	<div class="goods_detail_con clearfix">
-		<div class="goods_detail_pic fl"><img src="/static/images/goods_detail.jpg"></div>
+		<div class="goods_detail_pic fl"><img src="/static/{{ showGood.pic }}"></div>
 
 		<div class="goods_detail_list fr">
-			<h3>大兴大棚草莓</h3>
-			<p>草莓浆果柔软多汁，味美爽口，适合速冻保鲜贮藏。草莓速冻后，可以保持原有的色、香、味，既便于贮藏，又便于外销。</p>
+			<h3>{{ showGood.name }}</h3>
+			<p>{{ showGood.abstract }}</p>
 			<div class="prize_bar">
-				<span class="show_pirze">¥<em>16.80</em></span>
-				<span class="show_unit">单  位：500g</span>
+				<span class="show_pirze">¥<em>{{ showGood.price }}</em></span>
+				<span class="show_unit">单  位：{{ showGood.weight }}</span>
 			</div>
 			<div class="goods_num clearfix">
 				<div class="num_name fl">数 量：</div>
@@ -123,13 +123,13 @@
 				<h3>新品推荐</h3>
 				<ul>
 					<li>
-						<a href="/fe_goods/detail/"><img src="/static/images/goods/goods001.jpg"></a>
-						<h4><a href="/fe_goods/detail/">进口柠檬</a></h4>
+						<a href="/fe_goods/detail-{{newList.0.id}}-{{category_id}}/"><img src="/static/{{ newList.0.pic }}"></a>
+						<h4><a href="/fe_goods/detail-{{newList.0.id}}-{{category_id}}/">{{ newList.0.name }}</a></h4>
 						<div class="prize">￥3.90</div>
 					</li>
 					<li>
-						<a href="/fe_goods/detail/"><img src="/static/images/goods/goods002.jpg"></a>
-						<h4><a href="/fe_goods/detail/">玫瑰香葡萄</a></h4>
+						<a href="/fe_goods/detail-{{newList.1.id}}-{{category_id}}/"><img src="/static/{{ newList.1.pic }}"></a>
+						<h4><a href="/fe_goods/detail-{{newList.1.id}}-{{category_id}}/">{{ newList.1.name }}</a></h4>
 						<div class="prize">￥16.80</div>
 					</li>
 				</ul>
@@ -145,7 +145,7 @@
 			<div class="tab_content">
 				<dl>
 					<dt>商品详情：</dt>
-					<dd>草莓采摘园位于北京大兴区 庞各庄镇四各庄村 ，每年1月-6月面向北京以及周围城市提供新鲜草莓采摘和精品礼盒装草莓，草莓品种多样丰富，个大香甜。所有草莓均严格按照有机标准培育，不使用任何化肥和农药。草莓在采摘期间免洗可以直接食用。欢迎喜欢草莓的市民前来采摘，也欢迎各大单位选购精品有机草莓礼盒，有机草莓礼盒是亲朋馈赠、福利送礼的最佳选择。 </dd>
+					<dd>{{ showGood.detail|safe }}</dd>
 				</dl>
 			</div>
 

@@ -50,7 +50,7 @@
 	</div>
 
 	<div class="search_bar clearfix">
-		<a href="index.html" class="logo fl"><img src="static/images/logo.png"></a>
+		<a href="/" class="logo fl"><img src="static/images/logo.png"></a>
 		<div class="search_con fl">
 			<input type="text" class="input_text fl" name="" placeholder="搜索商品">
 			<input type="button" class="input_btn fr" name="" value="搜索">
@@ -76,27 +76,27 @@
 
 	<div class="center_con clearfix">
 		<ul class="subnav fl">
-			<li><a href="/fe_goods/list/" class="fruit">新鲜水果</a></li>
-			<li><a href="/fe_goods/list/" class="seafood">海鲜水产</a></li>
-			<li><a href="/fe_goods/list/" class="meet">猪牛羊肉</a></li>
-			<li><a href="/fe_goods/list/" class="egg">禽类蛋品</a></li>
-			<li><a href="/fe_goods/list/" class="vegetables">新鲜蔬菜</a></li>
-			<li><a href="/fe_goods/list/" class="ice">速冻食品</a></li>
+			<li><a href="/fe_goods/list1-1-0/" class="fruit">新鲜水果</a></li>
+			<li><a href="/fe_goods/list2-1-0/" class="seafood">海鲜水产</a></li>
+			<li><a href="/fe_goods/list3-1-0/" class="meet">猪牛羊肉</a></li>
+			<li><a href="/fe_goods/list4-1-0/" class="egg">禽类蛋品</a></li>
+			<li><a href="/fe_goods/list5-1-0/" class="vegetables">新鲜蔬菜</a></li>
+			<li><a href="/fe_goods/list6-1-0/" class="ice">速冻食品</a></li>
 		</ul>
 		<div class="slide fl">
 			<ul class="slide_pics">
-				<li><a href="/fe_goods/list/"><img src="static/images/slide.jpg" alt="幻灯片"></a></li>
-				<li><a href="/fe_goods/list/"><img src="static/images/slide02.jpg" alt="幻灯片"></a></li>
-				<li><a href="/fe_goods/list/"><img src="static/images/slide03.jpg" alt="幻灯片"></a></li>
-				<li><a href="/fe_goods/list/"><img src="static/images/slide04.jpg" alt="幻灯片"></a></li>
+				<li><a href="/fe_goods/list1-1-0/"><img src="static/images/slide.jpg" alt="幻灯片"></a></li>
+				<li><a href="/fe_goods/list2-1-0/"><img src="static/images/slide02.jpg" alt="幻灯片"></a></li>
+				<li><a href="/fe_goods/list3-1-0/"><img src="static/images/slide03.jpg" alt="幻灯片"></a></li>
+				<li><a href="/fe_goods/list4-1-0/"><img src="static/images/slide04.jpg" alt="幻灯片"></a></li>
 			</ul>
 			<div class="prev"></div>
 			<div class="next"></div>
 			<ul class="points"></ul>
 		</div>
 		<div class="adv fl">
-			<a href="/fe_goods/detail/"><img src="static/images/adv01.jpg"></a>
-			<a href="/fe_goods/detail/"><img src="static/images/adv02.jpg"></a>
+			<a href="/fe_goods/detail-730-1/"><img src="static/images/adv01.jpg"></a>
+			<a href="/fe_goods/detail-800-3/"><img src="static/images/adv02.jpg"></a>
 		</div>
 	</div>
 
@@ -105,36 +105,23 @@
 			<h3 class="fl" id="model01">新鲜水果</h3>
 			<div class="subtitle fl">
 				<span>|</span>
-				<a href="/fe_goods/detail/">鲜芒</a>
-				<a href="/fe_goods/detail/">加州提子</a>
-				<a href="/fe_goods/detail/">亚马逊牛油果</a>
+        {% for good in clickList1 %}
+            <a href="/fe_goods/detail-{{good.id}}-1/">{{ good.name|truncatechars:14 }}</a>
+				{% endfor %}
 			</div>
-			<a href="/fe_goods/list/" class="goods_more fr" id="fruit_more">查看更多 ></a>
+			<a href="/fe_goods/list1-1-0/" class="goods_more fr" id="fruit_more">查看更多 ></a>
 		</div>
 
 		<div class="goods_con clearfix">
 			<div class="goods_banner fl"><img src="static/images/banner01.jpg"></div>
 			<ul class="goods_list fl">
-				<li>
-					<h4><a href="/fe_goods/detail/">草莓</a></h4>
-					<a href="/fe_goods/detail/"><img src="static/images/goods/goods003.jpg"></a>
-					<div class="prize">¥ 30.00</div>
-				</li>
-				<li>
-					<h4><a href="/fe_goods/detail/">葡萄</a></h4>
-					<a href="/fe_goods/detail/"><img src="static/images/goods/goods002.jpg"></a>
-					<div class="prize">¥ 5.50</div>
-				</li>
-				<li>
-					<h4><a href="/fe_goods/detail/">柠檬</a></h4>
-					<a href="/fe_goods/detail/"><img src="static/images/goods/goods001.jpg"></a>
-					<div class="prize">¥ 3.90</div>
-				</li>
-				<li>
-					<h4><a href="/fe_goods/detail/">奇异果</a></h4>
-					<a href="/fe_goods/detail/"><img src="static/images/goods/goods012.jpg"></a>
-					<div class="prize">¥ 25.80</div>
-				</li>
+        {% for good in newList1 %}
+          <li>
+            <h4><a href="/fe_goods/detail-{{good.id}}-1/">{{ good.name }}</a></h4>
+            <a href="/fe_goods/detail-{{good.id}}-1/"><img src="static/{{ good.pic }}"></a>
+            <div class="prize">¥ {{ good.price }}</div>
+          </li>
+        {% endfor %}
 			</ul>
 		</div>
 	</div>
@@ -144,35 +131,23 @@
 			<h3 class="fl" id="model02">海鲜水产</h3>
 			<div class="subtitle fl">
 				<span>|</span>
-				<a href="/fe_goods/detail/">河虾</a>
-				<a href="/fe_goods/detail/">扇贝</a>				
+          {% for good in clickList2 %}
+             <a href="/fe_goods/detail-{{good.id}}-2/">{{ good.name|truncatechars:14 }}</a>
+          {% endfor %}
 			</div>
-			<a href="/fe_goods/list/" class="goods_more fr">查看更多 ></a>
+			<a href="/fe_goods/list2-1-0/" class="goods_more fr">查看更多 ></a>
 		</div>
 
 		<div class="goods_con clearfix">
 			<div class="goods_banner fl"><img src="static/images/banner02.jpg"></div>
 			<ul class="goods_list fl">
-				<li>
-					<h4><a href="/fe_goods/detail/">青岛野生海捕大青虾</a></h4>
-					<a href="/fe_goods/detail/"><img src="static/images/goods/goods018.jpg"></a>
-					<div class="prize">¥ 48.00</div>
-				</li>
-				<li>
-					<h4><a href="/fe_goods/detail/">扇贝</a></h4>
-					<a href="/fe_goods/detail/"><img src="static/images/goods/goods019.jpg"></a>
-					<div class="prize">¥ 46.00</div>
-				</li>
-				<li>
-					<h4><a href="/fe_goods/detail/">冷冻秋刀鱼</a></h4>
-					<a href="/fe_goods/detail/"><img src="static/images/goods/goods020.jpg"></a>
-					<div class="prize">¥ 19.00</div>
-				</li>
-				<li>
-					<h4><a href="/fe_goods/detail/">基围虾</a></h4>
-					<a href="/fe_goods/detail/"><img src="static/images/goods/goods021.jpg"></a>
-					<div class="prize">¥ 25.00</div>
-				</li>
+        {% for good in newList2 %}
+          <li>
+            <h4><a href="/fe_goods/detail-{{good.id}}-2/">{{ good.name }}</a></h4>
+            <a href="/fe_goods/detail-{{good.id}}-2/"><img src="static/{{ good.pic }}"></a>
+            <div class="prize">¥ {{ good.price }}</div>
+          </li>
+        {% endfor %}
 			</ul>
 		</div>
 	</div>
@@ -182,36 +157,23 @@
 			<h3 class="fl" id="model03">猪牛羊肉</h3>
 			<div class="subtitle fl">
 				<span>|</span>
-				<a href="/fe_goods/detail/">鲜芒</a>
-				<a href="/fe_goods/detail/">加州提子</a>
-				<a href="/fe_goods/detail/">亚马逊牛油果</a>
+          {% for good in clickList3 %}
+            <a href="/fe_goods/detail-{{good.id}}-3/">{{ good.name|truncatechars:14 }}</a>
+          {% endfor %}
 			</div>
-			<a href="/fe_goods/list/" class="goods_more fr">查看更多 ></a>
+			<a href="/fe_goods/list3-1-0/" class="goods_more fr">查看更多 ></a>
 		</div>
 
 		<div class="goods_con clearfix">
 			<div class="goods_banner fl"><img src="static/images/banner03.jpg"></div>
 			<ul class="goods_list fl">
-				<li>
-					<h4><a href="/fe_goods/detail/">维多利亚葡萄</a></h4>
-					<a href="/fe_goods/detail/"><img src="static/images/goods.jpg"></a>
-					<div class="prize">¥ 38.00</div>
-				</li>
-				<li>
-					<h4><a href="/fe_goods/detail/">维多利亚葡萄</a></h4>
-					<a href="/fe_goods/detail/"><img src="static/images/goods.jpg"></a>
-					<div class="prize">¥ 38.00</div>
-				</li>
-				<li>
-					<h4><a href="/fe_goods/detail/">维多利亚葡萄</a></h4>
-					<a href="/fe_goods/detail/"><img src="static/images/goods.jpg"></a>
-					<div class="prize">¥ 38.00</div>
-				</li>
-				<li>
-					<h4><a href="/fe_goods/detail/">维多利亚葡萄</a></h4>
-					<a href="/fe_goods/detail/"><img src="static/images/goods.jpg"></a>
-					<div class="prize">¥ 38.00</div>
-				</li>
+        {% for good in newList3 %}
+          <li>
+            <h4><a href="/fe_goods/detail-{{good.id}}-3/">{{ good.name }}</a></h4>
+            <a href="/fe_goods/detail-{{good.id}}-3/"><img src="static/{{ good.pic }}"></a>
+            <div class="prize">¥ {{ good.price }}</div>
+          </li>
+        {% endfor %}
 			</ul>
 		</div>
 	</div>
@@ -221,36 +183,23 @@
 			<h3 class="fl" id="model04">禽类蛋品</h3>
 			<div class="subtitle fl">
 				<span>|</span>
-				<a href="/fe_goods/detail/">鲜芒</a>
-				<a href="/fe_goods/detail/">加州提子</a>
-				<a href="/fe_goods/detail/">亚马逊牛油果</a>
+          {% for good in clickList4 %}
+            <a href="/fe_goods/detail-{{good.id}}-4/">{{ good.name|truncatechars:14 }}</a>
+          {% endfor %}
 			</div>
-			<a href="/fe_goods/list/" class="goods_more fr">查看更多 ></a>
+			<a href="/fe_goods/list4-1-0/" class="goods_more fr">查看更多 ></a>
 		</div>
 
 		<div class="goods_con clearfix">
-			<div class="goods_banner fl"><img src="static/images/banner04.jpg"></div>
-			<ul class="goods_list fl">
-				<li>
-					<h4><a href="/fe_goods/detail/">维多利亚葡萄</a></h4>
-					<a href="/fe_goods/detail/"><img src="static/images/goods.jpg"></a>
-					<div class="prize">¥ 38.00</div>
-				</li>
-				<li>
-					<h4><a href="/fe_goods/detail/">维多利亚葡萄</a></h4>
-					<a href="/fe_goods/detail/"><img src="static/images/goods.jpg"></a>
-					<div class="prize">¥ 38.00</div>
-				</li>
-				<li>
-					<h4><a href="/fe_goods/detail/">维多利亚葡萄</a></h4>
-					<a href="/fe_goods/detail/"><img src="static/images/goods.jpg"></a>
-					<div class="prize">¥ 38.00</div>
-				</li>
-				<li>
-					<h4><a href="/fe_goods/detail/">维多利亚葡萄</a></h4>
-					<a href="/fe_goods/detail/"><img src="static/images/goods.jpg"></a>
-					<div class="prize">¥ 38.00</div>
-				</li>
+      <div class="goods_banner fl"><img src="static/images/banner04.jpg"></div>
+      <ul class="goods_list fl">
+        {% for good in newList4 %}
+          <li>
+            <h4><a href="/fe_goods/detail-{{good.id}}-4/">{{ good.name }}</a></h4>
+            <a href="/fe_goods/detail-{{good.id}}-4/"><img src="static/{{ good.pic }}"></a>
+            <div class="prize">¥ {{ good.price }}</div>
+          </li>
+        {% endfor %}
 			</ul>
 		</div>
 	</div>
@@ -259,37 +208,24 @@
 		<div class="list_title clearfix">
 			<h3 class="fl" id="model05">新鲜蔬菜</h3>
 			<div class="subtitle fl">
-				<span>|</span>
-				<a href="/fe_goods/detail/">鲜芒</a>
-				<a href="/fe_goods/detail/">加州提子</a>
-				<a href="/fe_goods/detail/">亚马逊牛油果</a>
+        <span>|</span>
+        {% for good in clickList5 %}
+          <a href="/fe_goods/detail-{{good.id}}-5/">{{ good.name|truncatechars:14 }}</a>
+        {% endfor %}
 			</div>
-			<a href="/fe_goods/list/" class="goods_more fr">查看更多 ></a>
+			<a href="/fe_goods/list5-1-0/" class="goods_more fr">查看更多 ></a>
 		</div>
 
 		<div class="goods_con clearfix">
 			<div class="goods_banner fl"><img src="static/images/banner05.jpg"></div>
 			<ul class="goods_list fl">
-				<li>
-					<h4><a href="/fe_goods/detail/">维多利亚葡萄</a></h4>
-					<a href="/fe_goods/detail/"><img src="static/images/goods.jpg"></a>
-					<div class="prize">¥ 38.00</div>
-				</li>
-				<li>
-					<h4><a href="/fe_goods/detail/">维多利亚葡萄</a></h4>
-					<a href="/fe_goods/detail/"><img src="static/images/goods.jpg"></a>
-					<div class="prize">¥ 38.00</div>
-				</li>
-				<li>
-					<h4><a href="/fe_goods/detail/">维多利亚葡萄</a></h4>
-					<a href="/fe_goods/detail/"><img src="static/images/goods.jpg"></a>
-					<div class="prize">¥ 38.00</div>
-				</li>
-				<li>
-					<h4><a href="/fe_goods/detail/">维多利亚葡萄</a></h4>
-					<a href="/fe_goods/detail/"><img src="static/images/goods.jpg"></a>
-					<div class="prize">¥ 38.00</div>
-				</li>
+        {% for good in newList5 %}
+          <li>
+            <h4><a href="/fe_goods/detail-{{good.id}}-5/">{{ good.name }}</a></h4>
+            <a href="/fe_goods/detail-{{good.id}}-5/"><img src="static/{{ good.pic }}"></a>
+            <div class="prize">¥ {{ good.price }}</div>
+          </li>
+        {% endfor %}
 			</ul>
 		</div>
 	</div>
@@ -299,36 +235,23 @@
 			<h3 class="fl" id="model06">速冻食品</h3>
 			<div class="subtitle fl">
 				<span>|</span>
-				<a href="/fe_goods/detail/">鲜芒</a>
-				<a href="/fe_goods/detail/">加州提子</a>
-				<a href="/fe_goods/detail/">亚马逊牛油果</a>
+          {% for good in clickList6 %}
+            <a href="/fe_goods/detail-{{good.id}}-6/">{{ good.name|truncatechars:14 }}</a>
+          {% endfor %}
 			</div>
-			<a href="/fe_goods/list/" class="goods_more fr">查看更多 ></a>
+			<a href="/fe_goods/list6-1-0/" class="goods_more fr">查看更多 ></a>
 		</div>
 
 		<div class="goods_con clearfix">
 			<div class="goods_banner fl"><img src="static/images/banner06.jpg"></div>
 			<ul class="goods_list fl">
-				<li>
-					<h4><a href="/fe_goods/detail/">维多利亚葡萄</a></h4>
-					<a href="/fe_goods/detail/"><img src="static/images/goods.jpg"></a>
-					<div class="prize">¥ 38.00</div>
-				</li>
-				<li>
-					<h4><a href="/fe_goods/detail/">维多利亚葡萄</a></h4>
-					<a href="/fe_goods/detail/"><img src="static/images/goods.jpg"></a>
-					<div class="prize">¥ 38.00</div>
-				</li>
-				<li>
-					<h4><a href="/fe_goods/detail/">维多利亚葡萄</a></h4>
-					<a href="/fe_goods/detail/"><img src="static/images/goods.jpg"></a>
-					<div class="prize">¥ 38.00</div>
-				</li>
-				<li>
-					<h4><a href="/fe_goods/detail/">维多利亚葡萄</a></h4>
-					<a href="/fe_goods/detail/"><img src="static/images/goods.jpg"></a>
-					<div class="prize">¥ 38.00</div>
-				</li>
+        {% for good in newList6 %}
+          <li>
+            <h4><a href="/fe_goods/detail-{{good.id}}-6/">{{ good.name }}</a></h4>
+            <a href="/fe_goods/detail-{{good.id}}-6/"><img src="static/{{ good.pic }}"></a>
+            <div class="prize">¥ {{ good.price }}</div>
+          </li>
+        {% endfor %}
 			</ul>
 		</div>
 	</div>

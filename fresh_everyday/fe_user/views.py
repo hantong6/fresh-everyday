@@ -4,11 +4,30 @@ from django.http import JsonResponse,HttpResponse,HttpResponseRedirect
 from hashlib import sha1
 from models import *
 from decoration import *
+from fe_goods.models import *
 
 # Create your views here.
 
 def index(request):
-    return render(request,'./fe_user/index.html')
+    clickList1=GoodInfo.objects.filter(category_id=1).order_by('-click')[0:3]
+    newList1=GoodInfo.objects.filter(category_id=1).order_by('-id')[0:4]
+    clickList2=GoodInfo.objects.filter(category_id=2).order_by('-click')[0:3]
+    newList2=GoodInfo.objects.filter(category_id=2).order_by('-id')[0:4]
+    clickList3=GoodInfo.objects.filter(category_id=3).order_by('-click')[0:3]
+    newList3=GoodInfo.objects.filter(category_id=3).order_by('-id')[0:4]
+    clickList4=GoodInfo.objects.filter(category_id=4).order_by('-click')[0:3]
+    newList4=GoodInfo.objects.filter(category_id=4).order_by('-id')[0:4]
+    clickList5=GoodInfo.objects.filter(category_id=5).order_by('-click')[0:3]
+    newList5=GoodInfo.objects.filter(category_id=5).order_by('-id')[0:4]
+    clickList6=GoodInfo.objects.filter(category_id=6).order_by('-click')[0:3]
+    newList6=GoodInfo.objects.filter(category_id=6).order_by('-id')[0:4]
+    context={'clickList1':clickList1,'newList1':newList1,
+             'clickList2':clickList2,'newList2':newList2,
+             'clickList3':clickList3,'newList3':newList3,
+             'clickList4':clickList4,'newList4':newList4,
+             'clickList5':clickList5,'newList5':newList5,
+             'clickList6':clickList6,'newList6':newList6}
+    return render(request,'./fe_user/index.html',context)
 
 def login(request):
     return render(request,'./fe_user/login.html')

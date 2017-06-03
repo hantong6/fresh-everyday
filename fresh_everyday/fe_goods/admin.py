@@ -7,7 +7,7 @@ class CateGoryAdmin(admin.ModelAdmin):
     list_display = ['id','name']
 
 class GoodInfoAdmin(admin.ModelAdmin):
-    list_display = ['id','name','price','weight','abstract','category']
+    list_display = ['id','name','price','weight','click','store','abstract','category']
 
 admin.site.register(CateGory,CateGoryAdmin)
 admin.site.register(GoodInfo,GoodInfoAdmin)

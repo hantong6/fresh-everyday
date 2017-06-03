@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'fe_user',
     'fe_goods',
+    'tinymce',
 )
 
 MIDDLEWARE_CLASSES = (
