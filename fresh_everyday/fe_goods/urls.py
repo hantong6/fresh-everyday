@@ -5,5 +5,4 @@ urlpatterns=[
     url(r'^detail-(\d+)-(\d?)/$',views.detail),
 
 
-
 ]

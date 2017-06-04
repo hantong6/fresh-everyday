@@ -16,6 +16,7 @@ urlpatterns=[
     url(r'^usercenter_order/$',views.usercenter_order),
     url(r'^usercenter_site/$',views.usercenter_site),
     url(r'^usercenter_addrsave/$',views.usercenter_addrsave),
+    url(r'^search/$',views.FacetedSearchView()),
 
 
 

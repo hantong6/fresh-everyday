@@ -1,0 +1,165 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>天天生鲜-{{ query }}</title>
+	<link rel="stylesheet" type="text/css" href="/static/css/reset.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/main.css">
+    <script type="text/javascript" src="/static/js/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+           $.get('/fe_user/status_check/',function (reply) {
+               if(reply.username!='nobody')
+               {
+                   $('.login_btn').hide();
+                   $('.login_info em').html(reply.username);
+                   $('.login_info').show();
+                   $('.user_link .logout').show();
+               }
+           });
+        });
+    </script>
+</head>
+<body>
+	<div class="header_con">
+		<div class="header">
+			<div class="welcome fl">欢迎来到天天生鲜!</div>
+			<div class="fr">
+				<div class="login_info fl">
+					欢迎您：<em>张 山</em>
+				</div>
+				<div class="login_btn fl">
+					<a href="/fe_user/login/">登录</a>
+					<span>|</span>
+					<a href="/fe_user/register/">注册</a>
+				</div>
+				<div class="user_link fl">
+					<span>|</span>
+					<a href="/fe_user/usercenter_info/">用户中心</a>
+					<span>|</span>
+					<a href="cart.html">我的购物车</a>
+					<span>|</span>
+					<a href="/fe_user/usercenter_order/">我的订单</a>
+            <span class="logout">|</span>
+            <a href="/fe_user/logout/" class="logout">注销</a>
+				</div>
+			</div>
+		</div>		
+	</div>
+
+	<div class="search_bar clearfix">
+		<a href="/" class="logo fl"><img src="/static/images/logo.png"></a>
+		<div class="search_con fl">
+            <form method="get" action="/search/">
+                <input type="text" class="input_text fl" name="q" placeholder="输入搜索关键词">
+                <input type="submit" class="input_btn fr" value="搜索">
+            </form>
+		</div>
+		<div class="guest_cart fr">
+			<a href="#" class="cart_name fl">我的购物车</a>
+			<div class="goods_count fl">1</div>
+		</div>
+	</div>
+
+	<div class="navbar_con">
+		<div class="navbar clearfix">
+			<div class="subnav_con fl">
+				<h1>全部商品分类</h1>	
+				<span></span>			
+				<ul class="subnav">
+					<li><a href="/fe_goods/list1-1-0/" class="fruit">新鲜水果</a></li>
+					<li><a href="/fe_goods/list2-1-0/" class="seafood">海鲜水产</a></li>
+					<li><a href="/fe_goods/list3-1-0/" class="meet">猪牛羊肉</a></li>
+					<li><a href="/fe_goods/list4-1-0/" class="egg">禽类蛋品</a></li>
+					<li><a href="/fe_goods/list5-1-0/" class="vegetables">新鲜蔬菜</a></li>
+					<li><a href="/fe_goods/list6-1-0/" class="ice">速冻食品</a></li>
+				</ul>
+			</div>
+			<ul class="navlist fl">
+				<li><a href="/">首页</a></li>
+				<li class="interval">|</li>
+				<li><a href="/">手机生鲜</a></li>
+				<li class="interval">|</li>
+				<li><a href="/">抽奖</a></li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="breadcrumb">
+		<span style="display: inline-block;margin: auto;font: normal 18px/36px 'Microsoft Yahei';">有关“<em style="color: #ff4200">{{ query }}</em>”的商品：</span>
+	</div>
+
+	<div class="main_wrap clearfix">
+		<div class="r_wrap fr clearfix">
+			<ul class="goods_type_list clearfix">
+            {% for good in page %}
+              <li>
+              <a href="/fe_goods/detail-{{good.object.id}}-{{good.object.category.id}}/"><img src="/static/{{ good.object.pic }}"></a>
+              <h4><a href="/fe_goods/detail-{{good.object.id}}-{{good.object.category.id}}/">{{ good.object.name }}</a></h4>
+              <div class="operate">
+                  <span class="prize">￥{{ good.object.price }}</span>
+                  <span class="unit">{{ good.object.price }}/{{ good.object.weight }}</span>
+                  <a href="#" class="add_goods" title="加入购物车"></a>
+              </div>
+              </li>
+            {% endfor %}
+            </ul>
+
+			<div class="pagenation">
+            {% if paginator.num_pages <= 5 %}
+               {% for i in pageList %}
+                   <a href="/search/?q={{query}}&page={{ i }}" {% if page.number == i %}class="active"{% endif %}>{{ i }}</a>
+               {% endfor %} }
+            {% else %}
+            {% if page.number <= 3 %}
+                <a href="/search/?q={{query}}&page=1" {% if page.number == 1 %}class="active"{% endif %}>1</a>
+                <a href="/search/?q={{query}}&page=2" {% if page.number == 2 %}class="active"{% endif %}>2</a>
+                <a href="/search/?q={{query}}&page=3" {% if page.number == 3 %}class="active"{% endif %}>3</a>
+                <a href="/search/?q={{query}}&page=4">4</a>
+                <a href="/search/?q={{query}}&page=5">5</a>
+                <span>......</span>
+                <a href="/search/?q={{query}}&page={% if page.number == paginator.num_pages %}{{ page.number }}{% else %}{{ page.number|add:'1' }}{% endif %}">下一页&gt;</a>
+                <a href="/search/?q={{query}}&page={{paginator.num_pages}}">末页</a>
+            {% elif page.number > 3 and page.number < paginator.num_pages|add:'-2' %}
+                <a href="/search/?q={{query}}&page=1">首页</a>
+                <a href="/search/?q={{query}}&page={% if page.number == 1 %}1{% else %}{{ page.number|add:'-1' }}{% endif %}">&lt;上一页</a>
+                <span>......</span>
+                <a href="/search/?q={{query}}&page={{page.number|add:'-2'}}">{{ page.number|add:'-2' }}</a>
+                <a href="/search/?q={{query}}&page={{page.number|add:'-1'}}">{{ page.number|add:'-1' }}</a>
+                <a href="/search/?q={{query}}&page={{page.number}}" class="active">{{ page.number }}</a>
+                <a href="/search/?q={{query}}&page={{page.number|add:'1'}}">{{ page.number|add:'1' }}</a>
+                <a href="/search/?q={{query}}&page={{page.number|add:'2'}}">{{ page.number|add:'2' }}</a>
+                <span>......</span>
+                <a href="/search/?q={{query}}&page={% if page.number == paginator.num_pages %}{{ page.number }}{% else %}{{ page.number|add:'1' }}{% endif %}">下一页&gt;</a>
+                <a href="/search/?q={{query}}&page={{paginator.num_pages}}">末页</a>
+            {% else %}
+                <a href="/search/?q={{query}}&page=1">首页</a>
+                <a href="/search/?q={{query}}&page={% if page.number == 1 %}1{% else %}{{ page.number|add:'-1' }}{% endif %}">&lt;上一页</a>
+                <span>......</span>
+                <a href="/search/?q={{query}}&page={{page.number|add:'-4'}}">{{ paginator.num_pages|add:'-4' }}</a>
+                <a href="/search/?q={{query}}&page={{page.number|add:'-3'}}">{{ paginator.num_pages|add:'-3' }}</a>
+                <a href="/search/?q={{query}}&page={{page.number|add:'-2'}}" {% if page.number == paginator.num_pages|add:'-2' %}class="active"{% endif %}>{{ paginator.num_pages|add:'-2' }}</a>
+                <a href="/search/?q={{query}}&page={{page.number|add:'-1'}}" {% if page.number == paginator.num_pages|add:'-1' %}class="active"{% endif %}>{{ paginator.num_pages|add:'-1' }}</a>
+                <a href="/search/?q={{query}}&page={{page.number}}" {% if page.number == paginator.num_pages %}class="active"{% endif %}>{{ paginator.num_pages }}</a>
+            {% endif %}
+            {% endif %}
+            </div>
+		</div>
+	</div>
+
+	<div class="footer">
+		<div class="foot_link">
+			<a href="#">关于我们</a>
+			<span>|</span>
+			<a href="#">联系我们</a>
+			<span>|</span>
+			<a href="#">招聘人才</a>
+			<span>|</span>
+			<a href="#">友情链接</a>		
+		</div>
+		<p>CopyRight © 2016 北京天天生鲜信息技术有限公司 All Rights Reserved</p>
+		<p>电话：010-****888    京ICP备*******8号</p>
+	</div>
+	
+</body>
+</html>

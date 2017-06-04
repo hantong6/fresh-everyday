@@ -254,6 +254,7 @@ html,body{height:100%}
 .goods_num .num_add input{width:49px;height:50px;text-align:center;line-height:50px;border:0px;outline:none;font-size:14px;color:#666}
 .goods_num .num_add .add,.goods_num .num_add .minus{width:25px;line-height:25px;text-align:center;border-left:1px solid #ddd;border-bottom:1px solid #ddd;color:#666;font-size:14px}
 .goods_num .num_add .minus{border-bottom:0px}
+.add,.minus:hover{cursor: pointer;}
 
 .total{height:35px;line-height:35px;margin-top:25px;}
 .total em{font-style:normal;color:#ff3e3e;font-size:18px}

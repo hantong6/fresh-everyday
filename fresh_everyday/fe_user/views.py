@@ -5,6 +5,8 @@ from hashlib import sha1
 from models import *
 from decoration import *
 from fe_goods.models import *
+import re
+from haystack.views import SearchView
 
 # Create your views here.
 
@@ -112,12 +114,23 @@ def status_check(request):
 
 @jumptologin
 def usercenter_info(request):
+    if request.COOKIES.has_key('lastView'):
+        lastViewStr=request.COOKIES['lastView']
+        result=re.match(r'^(\d+)@(\d+)@(\d+)@(\d+)@(\d+)$',lastViewStr)
+        lastView1=GoodInfo.objects.get(id=int(result.group(1)))
+        lastView2=GoodInfo.objects.get(id=int(result.group(2)))
+        lastView3=GoodInfo.objects.get(id=int(result.group(3)))
+        lastView4=GoodInfo.objects.get(id=int(result.group(4)))
+        lastView5=GoodInfo.objects.get(id=int(result.group(5)))
+        lastList=[lastView1,lastView2,lastView3,lastView4,lastView5]
+    else:
+        lastList=[]
     username=request.session.get('username')
     curUser=UserInfo.objects.get(name=username)
     if curUser.address=='':
-        context={"name":curUser.name,"telephone":'还没有您的联系方式，请在收货地址栏添加！',"address":'还没有您的联系地址，请在收货地址栏添加！'}
+        context={"latsList":lastList,"name":curUser.name,"telephone":'还没有您的联系方式，请在收货地址栏添加！',"address":'还没有您的联系地址，请在收货地址栏添加！'}
     else:
-        context={"name":curUser.name,"telephone":curUser.telephone,"address":curUser.address}
+        context={"lastList":lastList,"name":curUser.name,"telephone":curUser.telephone,"address":curUser.address}
     return render(request,'./fe_user/user_center_info.html',context)
 
 @jumptologin
@@ -145,4 +158,10 @@ def usercenter_addrsave(request):
     context={"addressee":'('.decode('utf-8')+curUser.addressee+' 收）'.decode('utf-8'),"telephone":curUser.telephone,"address":curUser.address}
     return render(request,'./fe_user/user_center_site.html',context)
 
+class FacetedSearchView(SearchView):
+    def extra_context(self):
+        myPaginator,myPage=super(FacetedSearchView,self).build_page()
+        extra=super(FacetedSearchView,self).extra_context()
+        extra['pageList']=range(1,myPaginator.num_pages+1)
+        return extra
 

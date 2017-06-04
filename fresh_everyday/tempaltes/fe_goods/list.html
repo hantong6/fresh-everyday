@@ -50,8 +50,10 @@
 	<div class="search_bar clearfix">
 		<a href="/" class="logo fl"><img src="/static/images/logo.png"></a>
 		<div class="search_con fl">
-			<input type="text" class="input_text fl" name="" placeholder="搜索商品">
-			<input type="button" class="input_btn fr" name="" value="搜索">
+            <form method="get" action="/search/" target="_blank">
+                <input type="text" class="input_text fl" name="q" placeholder="输入搜索关键词">
+                <input type="submit" class="input_btn fr" value="搜索">
+            </form>
 		</div>
 		<div class="guest_cart fr">
 			<a href="#" class="cart_name fl">我的购物车</a>
@@ -118,7 +120,7 @@
 			</div>
 
 			<ul class="goods_type_list clearfix">
-          {% for good in myPage %}
+            {% for good in myPage %}
               <li>
                   <a href="/fe_goods/detail-{{good.id}}-{{category_id}}/"><img src="/static/{{ good.pic }}"></a>
                   <h4><a href="/fe_goods/detail-{{good.id}}-{{category_id}}/">{{ good.name }}</a></h4>
@@ -128,11 +130,10 @@
                       <a href="#" class="add_goods" title="加入购物车"></a>
                   </div>
               </li>
-          {% endfor %}
-      </ul>
+            {% endfor %}
+            </ul>
 
 			<div class="pagenation">
-            <a href="/fe_goods/list{{ category_id}}-{% if myPageIndex == 1 %}1{% else %}{{ myPageIndex|add:'-1' }}{% endif %}-{{orderIndex}}/">&lt;上一页</a>
             {% if myPageIndex <= 3 %}
                 <a href="/fe_goods/list{{category_id}}-1-{{orderIndex}}/" {% if myPageIndex == 1 %}class="active"{% endif %}>1</a>
                 <a href="/fe_goods/list{{category_id}}-2-{{orderIndex}}/" {% if myPageIndex == 2 %}class="active"{% endif %}>2</a>
@@ -140,7 +141,11 @@
                 <a href="/fe_goods/list{{category_id}}-4-{{orderIndex}}/">4</a>
                 <a href="/fe_goods/list{{category_id}}-5-{{orderIndex}}/">5</a>
                 <span>......</span>
+                <a href="/fe_goods/list{{category_id}}-{% if myPageIndex == myPageNum %}{{ myPageNum }}{% else %}{{ myPageIndex|add:'1' }}{% endif %}-{{orderIndex}}/">下一页&gt;</a>
+                <a href="/fe_goods/list{{category_id}}-{{myPageNum}}-{{orderIndex}}/">末页</a>
             {% elif myPageIndex > 3 and myPageIndex < myPageNum|add:'-2' %}
+                <a href="/fe_goods/list{{category_id}}-1-{{orderIndex}}/">首页</a>
+                <a href="/fe_goods/list{{category_id}}-{% if myPageIndex == 1 %}1{% else %}{{ myPageIndex|add:'-1' }}{% endif %}-{{orderIndex}}/">&lt;上一页</a>
                 <span>......</span>
                 <a href="/fe_goods/list{{category_id}}-{{myPageIndex|add:'-2'}}-{{orderIndex}}/">{{ myPageIndex|add:'-2' }}</a>
                 <a href="/fe_goods/list{{category_id}}-{{myPageIndex|add:'-1'}}-{{orderIndex}}/">{{ myPageIndex|add:'-1' }}</a>
@@ -148,7 +153,11 @@
                 <a href="/fe_goods/list{{category_id}}-{{myPageIndex|add:'1'}}-{{orderIndex}}/">{{ myPageIndex|add:'1' }}</a>
                 <a href="/fe_goods/list{{category_id}}-{{myPageIndex|add:'2'}}-{{orderIndex}}/">{{ myPageIndex|add:'2' }}</a>
                 <span>......</span>
+                <a href="/fe_goods/list{{category_id}}-{% if myPageIndex == myPageNum %}{{ myPageNum }}{% else %}{{ myPageIndex|add:'1' }}{% endif %}-{{orderIndex}}/">下一页&gt;</a>
+                <a href="/fe_goods/list{{category_id}}-{{myPageNum}}-{{orderIndex}}/">末页</a>
             {% else %}
+                <a href="/fe_goods/list{{category_id}}-1-{{orderIndex}}/">首页</a>
+                <a href="/fe_goods/list{{category_id}}-{% if myPageIndex == 1 %}1{% else %}{{ myPageIndex|add:'-1' }}{% endif %}-{{orderIndex}}/">&lt;上一页</a>
                 <span>......</span>
                 <a href="/fe_goods/list{{category_id}}-{{myPageNum|add:'-4'}}-{{orderIndex}}/">{{ myPageNum|add:'-4' }}</a>
                 <a href="/fe_goods/list{{category_id}}-{{myPageNum|add:'-3'}}-{{orderIndex}}/">{{ myPageNum|add:'-3' }}</a>
@@ -156,7 +165,6 @@
                 <a href="/fe_goods/list{{category_id}}-{{myPageNum|add:'-1'}}-{{orderIndex}}/" {% if myPageIndex == myPageNum|add:'-1' %}class="active"{% endif %}>{{ myPageNum|add:'-1' }}</a>
                 <a href="/fe_goods/list{{category_id}}-{{myPageNum}}-{{orderIndex}}/" {% if myPageIndex == myPageNum %}class="active"{% endif %}>{{ myPageNum }}</a>
             {% endif %}
-            <a href="/fe_goods/list{{ category_id }}-{% if myPageIndex == myPageNum %}{{ myPageNum }}{% else %}{{ myPageIndex|add:'1' }}{% endif %}-{{orderIndex}}/">下一页&gt;</a>
 			</div>
 		</div>
 	</div>
