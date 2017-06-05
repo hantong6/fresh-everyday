@@ -21,5 +21,7 @@ class GoodInfo(models.Model):
     store=models.IntegerField()
     detail=HTMLField()
     category=models.ForeignKey(CateGory)
+    def __str__(self):
+        return self.name.encode('utf-8')
 
 

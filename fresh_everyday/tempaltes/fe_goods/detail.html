@@ -15,6 +15,7 @@
                    $('.login_info em').html(reply.username);
                    $('.login_info').show();
                    $('.user_link .logout').show();
+                   $('.goods_count').html(reply.orderCount);
                 }
             });
 
@@ -23,14 +24,43 @@
                 var count=parseInt($('.num_show').val())+1;
                 $('.num_show').val(count);
                 $('.total em').text((price*count).toFixed(2));
-            })
+            });
             $('.minus').click(function () {
                 var price=parseFloat($('.show_pirze em').text());
                 var count=parseInt($('.num_show').val())-1;
                 if(count==0){count=1;}
                 $('.num_show').val(count);
                 $('.total em').text((price*count).toFixed(2));
-            })
+            });
+
+            $('.add_cart').click(function () {
+              var goodId=$(this).prop('id');
+
+              var $box1_1=$('.goods_count');
+              var $box1_2=$(this);
+              var $box1_3=$('.add_jump');
+
+              var oPos_cart=$box1_1.offset();
+              var w_cart=$box1_1.outerWidth();
+              var h_cart=$box1_1.outerHeight();
+
+              var oPos_btn=$box1_2.offset();
+              var w_btn=$box1_2.outerWidth();
+              var h_btn=$box1_2.outerHeight();
+
+              $.get('/fe_cart/new_order'+goodId+'/',function (reply) {
+                    if(reply.orderCount==0){$('.pop').fadeIn();}
+                    else
+                    {
+                        $box1_3.css({'left':oPos_btn.left+parseInt(w_btn/2)-5,'top':oPos_btn.top+parseInt(h_btn/2)-5});
+                        $box1_3.show();
+                        $box1_3.stop().animate({'left':oPos_cart.left+parseInt(w_cart/2)-5,'top':oPos_cart.top+parseInt(h_cart/2)-5},1000,'swing',function(){
+                            $box1_3.hide();
+                            $box1_1.html(reply.orderCount);
+                        });
+                    }
+              });
+            });
         });
     </script>
 </head>
@@ -51,7 +81,7 @@
 					<span>|</span>
 					<a href="/fe_user/usercenter_info/">用户中心</a>
 					<span>|</span>
-					<a href="cart.html">我的购物车</a>
+					<a href="/fe_cart/cart/">我的购物车</a>
 					<span>|</span>
 					<a href="/fe_user/usercenter_order/">我的订单</a>
             <span class="logout">|</span>
@@ -70,8 +100,8 @@
             </form>
 		</div>
 		<div class="guest_cart fr">
-			<a href="cart.html" class="cart_name fl">我的购物车</a>
-			<div class="goods_count fl" id="show_count">1</div>
+			<a href="/fe_cart/cart/" class="cart_name fl">我的购物车</a>
+			<div class="goods_count fl" id="show_count">0</div>
 		</div>
 	</div>
 
@@ -127,8 +157,8 @@
 			</div>
 			<div class="total">总价：<em>{{ showGood.price }}</em>元</div>
 			<div class="operate_btn">
-				<a href="javascript:;" class="buy_btn">立即购买</a>
-				<a href="javascript:;" class="add_cart" id="add_cart">加入购物车</a>				
+				<a href="/fe_cart/cart/" class="buy_btn">立即购买</a>
+				<a href="javascript:;" class="add_cart" id="{{ showGood.id }}">加入购物车</a>
 			</div>
 		</div>
 	</div>
@@ -181,29 +211,30 @@
 		<p>CopyRight © 2016 北京天天生鲜信息技术有限公司 All Rights Reserved</p>
 		<p>电话：010-****888    京ICP备*******8号</p>
 	</div>
+
+    <div class="pop">
+        <div class="word">
+            <div class="title">用户登陆</div>
+            <hr>
+            <div class="form_input">
+                <form method="post" action="/fe_user/login_submit/">
+                    {% csrf_token %}
+                    <input type="text" name="username" class="name_input" placeholder="请输入用户名">
+                    <div class="user_error">用户名不存在！</div>
+                    <input type="password" name="pwd" class="pass_input" placeholder="请输入密码">
+                    <div class="pwd_error">密码错误！</div>
+                    <div class="more_input clearfix">
+                        <input type="checkbox" name="usermark" checked>
+                        <label>记住用户名</label>
+                    </div>
+                    <input type="submit" class="input_submit" value="登陆">
+                </form>
+            </div>
+        </div>
+        <div class="mask"></div>
+    </div>
+
 	<div class="add_jump"></div>
 
-	<script type="text/javascript" src="/static/js/jquery-1.12.4.min.js"></script>
-	<script type="text/javascript">
-		var $add_x = $('#add_cart').offset().top;
-		var $add_y = $('#add_cart').offset().left;
-
-		var $to_x = $('#show_count').offset().top;
-		var $to_y = $('#show_count').offset().left;
-
-		$(".add_jump").css({'left':$add_y+80,'top':$add_x+10,'display':'block'})
-		$('#add_cart').click(function(){
-			$(".add_jump").stop().animate({
-				'left': $to_y+7,
-				'top': $to_x+7},
-				"fast", function() {
-					$(".add_jump").fadeOut('fast',function(){
-						$('#show_count').html(2);
-					});
-
-			});
-		})
-	</script>
-	
 </body>
 </html>

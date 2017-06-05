@@ -5,6 +5,7 @@ from hashlib import sha1
 from models import *
 from decoration import *
 from fe_goods.models import *
+from fe_cart.models import *
 import re
 from haystack.views import SearchView
 
@@ -109,7 +110,10 @@ def logout(request):
 
 def status_check(request):
     username=request.session.get('username','nobody')
-    reply={"username":username}
+    orderCount=0
+    if username!='nobody':
+        orderCount=OrderInfo.objects.filter(user__name=username,status=False).count()
+    reply={"username":username,'orderCount':orderCount}
     return JsonResponse(reply)
 
 @jumptologin

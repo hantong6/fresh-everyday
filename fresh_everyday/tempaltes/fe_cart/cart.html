@@ -1,0 +1,186 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>天天生鲜-购物车</title>
+	<link rel="stylesheet" type="text/css" href="/static/css/reset.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/main.css">
+    <script type="text/javascript" src="/static/js/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+           $.get('/fe_user/status_check/',function (reply) {
+               if(reply.username!='nobody')
+               {
+                   $('.login_btn').hide();
+                   $('.login_info em').html(reply.username);
+                   $('.login_info').show();
+                   $('.user_link .logout').show();
+               }
+           });
+
+           $('.cart_list_td .col07 em').each(function () {
+               var price=parseFloat($(this).parent().parent().find('.col05 em').text());
+               var count=parseInt($(this).parent().parent().find('.num_show').val());
+               $(this).text((price*count).toFixed(2));
+           });
+           total_price();
+           total_count();
+
+           $('.cart_list_td .add').click(function () {
+                var leader=$(this).parent().parent().parent();
+                var price=parseFloat(leader.find('.col05 em').text());
+                var count=parseInt(leader.find('.num_show').val())+1;
+                leader.find('.num_show').val(count);
+                leader.find('.col07 em').text((price*count).toFixed(2));
+                total_price();
+                total_count();
+                var chgOrderId=$(this).parent().parent().parent().prop('id');
+                $.get('/fe_cart/chg_count'+chgOrderId+'-'+count+'/',function (reply) {});
+            });
+            $('.cart_list_td .minus').click(function () {
+                var leader=$(this).parent().parent().parent();
+                var price=parseFloat(leader.find('.col05 em').text());
+                var count=parseInt(leader.find('.num_show').val())-1;
+                if(count==0){count=1;}
+                leader.find('.num_show').val(count);
+                leader.find('.col07 em').text((price*count).toFixed(2));
+                total_price();
+                total_count();
+                var chgOrderId=$(this).parent().parent().parent().prop('id');
+                $.get('/fe_cart/chg_count'+chgOrderId+'-'+count+'/',function (reply) {});
+            });
+
+            $('.cart_list_td .col01 input').click(function () {
+                total_price();
+                total_count();
+            });
+
+            $('.cart_list_td .col08').click(function () {
+               delOrderId=$(this).parent().prop('id');
+               $.get('/fe_cart/del_order'+delOrderId+'/',function (reply) {
+                    $(this).parent().remove();
+                    location.reload();
+               });
+               total_price();
+               total_count();
+            });
+
+            $('.settlements .col04').click(function () {
+               $('.cart_list_td .col01 input').each(function () {
+                  chgOrderId=parseInt($(this).parent().parent().prop('id'))
+                  if($(this).is(':checked'))
+                  {$.get('/fe_cart/chg_status'+chgOrderId+'/',function (reply) {});}
+               });
+            });
+
+            function total_price() {
+                var totalPrice=0;
+                $('.cart_list_td .col07').each(function () {
+                   if($(this).parent().find('.col01 input').is(':checked'))
+                   {totalPrice+=parseFloat($(this).text());}
+                });
+                $('.settlements .col03 em').text(totalPrice.toFixed(2));
+            }
+
+            function total_count() {
+                var totalCount=0;
+                var totalChecked=0;
+                $('.cart_list_td .col01 input').each(function () {
+                   if($(this).is(':checked')){totalChecked+=parseInt($(this).parent().parent().find('.num_show').val());}
+                   totalCount+=parseInt($(this).parent().parent().find('.num_show').val());
+                });
+                $('.total_count em').text(totalCount);
+                $('.settlements .col03 b').text(totalChecked);
+            }
+
+        });
+    </script>
+</head>
+<body>
+	<div class="header_con">
+		<div class="header">
+			<div class="welcome fl">欢迎来到天天生鲜!</div>
+			<div class="fr">
+				<div class="login_info fl">
+					欢迎您：<em>张 山</em>
+				</div>
+				<div class="login_btn fl">
+					<a href="/fe_user/login/">登录</a>
+					<span>|</span>
+					<a href="/fe_user/register/">注册</a>
+				</div>
+				<div class="user_link fl">
+					<span>|</span>
+					<a href="/fe_user/usercenter_info/">用户中心</a>
+					<span>|</span>
+					<a href="/fe_cart/cart/">我的购物车</a>
+					<span>|</span>
+					<a href="/fe_user/usercenter_order/">我的订单</a>
+				</div>
+			</div>
+		</div>		
+	</div>
+
+	<div class="search_bar clearfix">
+		<a href="/" class="logo fl"><img src="/static/images/logo.png"></a>
+		<div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;购物车</div>
+		<div class="search_con fr">
+            <form method="get" action="/search/">
+                <input type="text" class="input_text fl" name="q" placeholder="输入搜索关键字">
+                <input type="submit" class="input_btn fr" value="搜索">
+            </form>
+		</div>
+	</div>
+
+	<div class="total_count">全部商品<em></em>件</div>
+	<ul class="cart_list_th clearfix">
+		<li class="col01">商品名称</li>
+		<li class="col02">商品单位</li>
+		<li class="col03">商品价格</li>
+		<li class="col04">数量</li>
+		<li class="col05">小计</li>
+		<li class="col06">操作</li>
+	</ul>
+
+    {% for order in orderSet %}
+        <ul class="cart_list_td clearfix" id="{{ order.id }}">
+            <li class="col01"><input type="checkbox" name="" checked></li>
+            <li class="col02"><img src="/static/{{ order.good.pic }}"></li>
+            <li class="col03">{{ order.good.name }}<br><em>{{ order.good.price }}元/{{ order.good.weight }}</em></li>
+            <li class="col04">{{ order.good.weight }}</li>
+            <li class="col05"><em>{{ order.good.price }}</em>元</li>
+            <li class="col06">
+                <div class="num_add">
+                    <a href="javascript:;" class="add fl">+</a>
+                    <input type="text" class="num_show fl" value="{{ order.count }}" readonly="readonly">
+                    <a href="javascript:;" class="minus fl">-</a>
+                </div>
+            </li>
+            <li class="col07"><em></em>元</li>
+            <li class="col08"><a href="javascript:;">删除</a></li>
+        </ul>
+    {% endfor %}
+
+	<ul class="settlements">
+		<li class="col01"><input type="checkbox" name="" checked></li>
+		<li class="col02">全选</li>
+		<li class="col03">合计(不含运费)：<span>¥</span><em></em><br>共计<b></b>件商品</li>
+		<li class="col04"><a href="/fe_cart/close_account/">去结算</a></li>
+	</ul>
+
+	<div class="footer">
+		<div class="foot_link">
+			<a href="#">关于我们</a>
+			<span>|</span>
+			<a href="#">联系我们</a>
+			<span>|</span>
+			<a href="#">招聘人才</a>
+			<span>|</span>
+			<a href="#">友情链接</a>		
+		</div>
+		<p>CopyRight © 2016 北京天天生鲜信息技术有限公司 All Rights Reserved</p>
+		<p>电话：010-****888    京ICP备*******8号</p>
+	</div>
+	
+</body>
+</html>

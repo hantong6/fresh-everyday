@@ -6,6 +6,7 @@
 	<link rel="stylesheet" type="text/css" href="/static/css/reset.css">
 	<link rel="stylesheet" type="text/css" href="/static/css/main.css">
     <script type="text/javascript" src="/static/js/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="/static/js/login.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
            $.get('/fe_user/status_check/',function (reply) {
@@ -15,7 +16,37 @@
                    $('.login_info em').html(reply.username);
                    $('.login_info').show();
                    $('.user_link .logout').show();
+                   $('.goods_count').html(reply.orderCount);
                }
+           });
+
+           $('.add_goods').click(function () {
+              var goodId=$(this).prop('id');
+
+              var $box1_1=$('.goods_count');
+              var $box1_2=$(this);
+              var $box1_3=$('.add_jump');
+
+              var oPos_cart=$box1_1.offset();
+              var w_cart=$box1_1.outerWidth();
+              var h_cart=$box1_1.outerHeight();
+
+              var oPos_btn=$box1_2.offset();
+              var w_btn=$box1_2.outerWidth();
+              var h_btn=$box1_2.outerHeight();
+
+              $.get('/fe_cart/new_order'+goodId+'/',function (reply) {
+                    if(reply.orderCount==0){$('.pop').fadeIn();}
+                    else
+                    {
+                        $box1_3.css({'left':oPos_btn.left+parseInt(w_btn/2)-5,'top':oPos_btn.top+parseInt(h_btn/2)-5});
+                        $box1_3.show();
+                        $box1_3.stop().animate({'left':oPos_cart.left+parseInt(w_cart/2)-5,'top':oPos_cart.top+parseInt(h_cart/2)-5},1000,'swing',function(){
+                            $box1_3.hide();
+                            $box1_1.html(reply.orderCount);
+                        });
+                    }
+              });
            });
         });
     </script>
@@ -37,7 +68,7 @@
 					<span>|</span>
 					<a href="/fe_user/usercenter_info/">用户中心</a>
 					<span>|</span>
-					<a href="cart.html">我的购物车</a>
+					<a href="/fe_cart/cart/">我的购物车</a>
 					<span>|</span>
 					<a href="/fe_user/usercenter_order/">我的订单</a>
             <span class="logout">|</span>
@@ -56,8 +87,8 @@
             </form>
 		</div>
 		<div class="guest_cart fr">
-			<a href="#" class="cart_name fl">我的购物车</a>
-			<div class="goods_count fl">1</div>
+			<a href="/fe_cart/cart/" class="cart_name fl">我的购物车</a>
+			<div class="goods_count fl">0</div>
 		</div>
 	</div>
 
@@ -127,7 +158,7 @@
                   <div class="operate">
                       <span class="prize">￥{{ good.price }}</span>
                       <span class="unit">{{ good.price }}/{{ good.weight }}</span>
-                      <a href="#" class="add_goods" title="加入购物车"></a>
+                      <a class="add_goods" title="加入购物车" id="{{ good.id }}"></a>
                   </div>
               </li>
             {% endfor %}
@@ -182,6 +213,30 @@
 		<p>CopyRight © 2016 北京天天生鲜信息技术有限公司 All Rights Reserved</p>
 		<p>电话：010-****888    京ICP备*******8号</p>
 	</div>
-	
+
+    <div class="pop">
+        <div class="word">
+            <div class="title">用户登陆</div>
+            <hr>
+            <div class="form_input">
+                <form method="post" action="/fe_user/login_submit/">
+                    {% csrf_token %}
+                    <input type="text" name="username" class="name_input" placeholder="请输入用户名">
+                    <div class="user_error">用户名不存在！</div>
+                    <input type="password" name="pwd" class="pass_input" placeholder="请输入密码">
+                    <div class="pwd_error">密码错误！</div>
+                    <div class="more_input clearfix">
+                        <input type="checkbox" name="usermark" checked>
+                        <label>记住用户名</label>
+                    </div>
+                    <input type="submit" class="input_submit" value="登陆">
+                </form>
+            </div>
+        </div>
+        <div class="mask"></div>
+    </div>
+
+    <div class="add_jump"></div>
+
 </body>
 </html>
