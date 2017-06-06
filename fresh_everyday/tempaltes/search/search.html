@@ -15,6 +15,7 @@
                    $('.login_info em').html(reply.username);
                    $('.login_info').show();
                    $('.user_link .logout').show();
+                   $('.goods_count').html(reply.orderCount);
                }
            });
         });
@@ -37,11 +38,11 @@
 					<span>|</span>
 					<a href="/fe_user/usercenter_info/">用户中心</a>
 					<span>|</span>
-					<a href="cart.html">我的购物车</a>
+					<a href="/fe_cart/cart/">我的购物车</a>
 					<span>|</span>
-					<a href="/fe_user/usercenter_order/">我的订单</a>
-            <span class="logout">|</span>
-            <a href="/fe_user/logout/" class="logout">注销</a>
+					<a href="/fe_cart/cart/">我的订单</a>
+                    <span class="logout">|</span>
+                    <a href="/fe_user/logout/" class="logout">注销</a>
 				</div>
 			</div>
 		</div>		
@@ -57,7 +58,7 @@
 		</div>
 		<div class="guest_cart fr">
 			<a href="#" class="cart_name fl">我的购物车</a>
-			<div class="goods_count fl">1</div>
+			<div class="goods_count fl">0</div>
 		</div>
 	</div>
 
