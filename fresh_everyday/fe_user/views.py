@@ -8,7 +8,7 @@ from fe_goods.models import *
 from fe_cart.models import *
 import re
 from haystack.views import SearchView
-
+import time
 # Create your views here.
 
 def index(request):
@@ -139,7 +139,19 @@ def usercenter_info(request):
 
 @jumptologin
 def usercenter_order(request):
-    return render(request,'./fe_user/user_center_order.html')
+    usename=request.session.get('username')
+    curUser=UserInfo.objects.get(name=usename)
+    packSet=PackInfo.objects.all()
+    codeList=[]
+    packList=[]
+    for pack in packSet:
+        codeList.append(pack.code)
+    codeList=list(set(codeList))
+    for code in codeList:
+        orderSet=PackInfo.objects.filter(code=code)
+        packList.append(orderSet)
+    context={'packList':packList}
+    return render(request,'./fe_user/user_center_order.html',context)
 
 @jumptologin
 def usercenter_site(request):

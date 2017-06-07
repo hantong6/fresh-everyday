@@ -8,6 +8,7 @@ urlpatterns=[
     url(r'^del_order(\d+)/$',views.del_order),
     url(r'^chg_count(\d+)-(\d+)/$',views.chg_count),
     url(r'^chg_status(\d+)/$',views.chg_status),
+    url(r'^true_status(\d+)/$',views.true_status),
     url(r'^over_order(\d+)/$',views.over_order),
     url(r'^order_submit/$',views.order_submit),
 ]

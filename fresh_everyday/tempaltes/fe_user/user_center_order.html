@@ -17,6 +17,30 @@
                    $('.user_link .logout').show();
                }
            });
+
+           $('.order_list_th .stress').each(function () {
+              if($(this).text()=='True'){($(this).text('已付款'));}
+              else{$(this).text('未支付');}
+           });
+           $('.order_list_table .stress').each(function () {
+               if($(this).text()=='True'){($(this).text('已付款'));$(this).next().children().text('查看物流');}
+               else{$(this).text('未支付');$(this).next().children().text('去付款');}
+           });
+
+           $('.order_goods_list').each(function () {
+               var price=parseFloat($(this).find('.col02 em').text());
+               var count=parseInt($(this).find('.col03').text());
+               $(this).find('.col04 em').text((price*count).toFixed(2));
+           });
+
+           $('.order_list_table').each(function () {
+               var total=0;
+               $(this).find('.col04 em').each(function () {
+                   total+=parseFloat($(this).text());
+               });
+               $(this).find('.total666 em').text(total);
+           });
+
         });
     </script>
 </head>
@@ -39,7 +63,7 @@
 					<span>|</span>
 					<a href="/fe_cart/cart/">我的购物车</a>
 					<span>|</span>
-					<a href="/fe_cart/cart/">我的订单</a>
+					<a href="/fe_user/usercenter_order/">我的订单</a>
                     <span class="logout">|</span>
                     <a href="/fe_user/logout/" class="logout">注销</a>
 				</div>
@@ -63,84 +87,44 @@
 			<h3>用户中心</h3>
 			<ul>
 				<li><a href="/fe_user/usercenter_info/">· 个人信息</a></li>
-				<li><a href="/fe_cart/cart/" class="active">· 全部订单</a></li>
+				<li><a href="/fe_user/usercenter_order/" class="active">· 全部订单</a></li>
 				<li><a href="/fe_user/usercenter_site/">· 收货地址</a></li>
 			</ul>
 		</div>
 		<div class="right_content clearfix">
-				<h3 class="common_title2">全部订单</h3>
-				<ul class="order_list_th w978 clearfix">
-					<li class="col01">2016-8-21 17:36:24</li>
-					<li class="col02">订单号：56872934</li>
-					<li class="col02 stress">未支付</li>		
-				</ul>
+            <h3 class="common_title2">全部订单</h3>
 
-				<table class="order_list_table w980">
-					<tbody>
-						<tr>
-							<td width="55%">
-								<ul class="order_goods_list clearfix">					
-									<li class="col01"><a href="/fe_goods/detail/"><img src="/static/images/goods02.jpg"></a></li>
-									<li class="col02"><a href="/fe_goods/detail/">嘎啦苹果嘎啦苹果<em>11.80元/500g</em></a></li>	
-									<li class="col03">1</li>
-									<li class="col04">11.80元</li>	
-								</ul>
-								<ul class="order_goods_list clearfix">					
-									<li class="col01"><a href="/fe_goods/detail/"><img src="/static/images/goods02.jpg"></a></li>
-									<li class="col02"><a href="/fe_goods/detail/">嘎啦苹果嘎啦苹果<em>11.80元/500g</em></a></li>	
-									<li class="col03">1</li>
-									<li class="col04">11.80元</li>	
-								</ul>
-							</td>
-							<td width="15%">33.60元</td>
-							<td width="15%">待付款</td>
-							<td width="15%"><a href="/fe_cart/close_account/" class="oper_btn">去付款</a></td>
-						</tr>
-					</tbody>
-				</table>
-				
-				<ul class="order_list_th w978 clearfix">
-					<li class="col01">2016-8-21 17:36:24</li>
-					<li class="col02">订单号：56872934</li>
-					<li class="col02 stress">已支付</li>			
-				</ul>
-				<table class="order_list_table w980">
-					<tbody>
-						<tr>
-							<td width="55%">
-								<ul class="order_goods_list clearfix">					
-									<li class="col01"><a href="/fe_goods/detail/"><img src="/static/images/goods02.jpg"></a></li>
-									<li class="col02"><a href="/fe_goods/detail/">嘎啦苹果嘎啦苹果<em>11.80元/500g</em></a></li>	
-									<li class="col03">1</li>
-									<li class="col04">11.80元</li>	
-								</ul>
-								<ul class="order_goods_list clearfix">					
-									<li class="col01"><a href="/fe_goods/detail/"><img src="/static/images/goods02.jpg"></a></li>
-									<li class="col02"><a href="/fe_goods/detail/">嘎啦苹果嘎啦苹果<em>11.80元/500g</em></a></li>	
-									<li class="col03">1</li>
-									<li class="col04">11.80元</li>	
-								</ul>
-							</td>
-							<td width="15%">33.60元</td>
-							<td width="15%">已付款</td>
-							<td width="15%"><a href="#" class="oper_btn">查看物流</a></td>
-						</tr>
-					</tbody>
-				</table>
+            {% for orderSet in packList %}
 
-				<div class="pagenation">
-					<a href="#"><上一页</a>
-					<a href="#" class="active">1</a>
-					<a href="#">2</a>
-					<a href="#">3</a>
-					<a href="#">4</a>
-					<a href="#">5</a>
-					<a href="#">下一页></a>
-				</div>
+            <ul class="order_list_th w978 clearfix">
+                <li class="col01">{{ orderSet.0.tmark }}</li>
+                <li class="col02">订单号：{{ orderSet.0.code }}</li>
+                <li class="col02 stress">{{ orderSet.0.isdelete }}</li>
+            </ul>
+            <table class="order_list_table w980">
+                <tbody>
+                    <tr>
+                        <td width="55%">
+                            {% for pack in orderSet %}
+                            <ul class="order_goods_list clearfix">
+                                <li class="col01"><img src="/static/{{ pack.order.good.pic }}"></li>
+                                <li class="col02">{{ pack.order.good.name|truncatechars:14 }}<em>{{ pack.order.good.price }}</em>元/{{ pack.order.good.weight }}</li>
+                                <li class="col03">{{ pack.order.count }}</li>
+                                <li class="col04"><em></em>元</li>
+                            </ul>
+                            {% endfor %}
+                        </td>
+                        <td width="15%" class="total666"><em></em>元</td>
+                        <td width="15%" class="stress">{{ orderSet.0.isdelete }}</td>
+                        <td width="15%"><a href="#" class="oper_btn"></a></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            {% endfor %}
+
 		</div>
 	</div>
-
-
 
 	<div class="footer">
 		<div class="foot_link">
