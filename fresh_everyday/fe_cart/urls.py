@@ -3,7 +3,7 @@ import views
 
 urlpatterns=[
     url(r'^cart/$',views.cart),
-    url(r'^close_account/$',views.close_account),
+    url(r'^close_account(\d*)-(\w+)/$',views.close_account),
     url(r'^new_order(\d+)/$',views.new_order),
     url(r'^del_order(\d+)/$',views.del_order),
     url(r'^chg_count(\d+)-(\d+)/$',views.chg_count),

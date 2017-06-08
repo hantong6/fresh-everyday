@@ -35,9 +35,7 @@
 
            $('.order_list_table').each(function () {
                var total=0;
-               $(this).find('.col04 em').each(function () {
-                   total+=parseFloat($(this).text());
-               });
+               $(this).find('.col04 em').each(function () {total+=parseFloat($(this).text());});
                $(this).find('.total666 em').text(total);
            });
 
@@ -116,7 +114,7 @@
                         </td>
                         <td width="15%" class="total666"><em></em>元</td>
                         <td width="15%" class="stress">{{ orderSet.0.isdelete }}</td>
-                        <td width="15%"><a href="#" class="oper_btn"></a></td>
+                        <td width="15%"><a href="/fe_cart/close_account{{ orderSet.0.code }}-{{ orderSet.0.isdelete }}/" class="oper_btn"></a></td>
                     </tr>
                 </tbody>
             </table>

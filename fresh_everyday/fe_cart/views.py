@@ -70,31 +70,40 @@ def true_status(request,trueOrderId):
     trueOrder.save()
     return JsonResponse(reply)
 
-def close_account(request):
-    username=request.session.get('username')
-    curUser=UserInfo.objects.get(name=username)
-
-    orderSet2=OrderInfo.objects.filter(user_id=curUser.id,status=True)
-    orderSet2=set(orderSet2)
-    packSet=PackInfo.objects.all()
-    orderSet1=[]
-    for pack in packSet:
-        orderSet1.append(pack.order)
-    orderSet1=set(orderSet1)
-    orderSet=orderSet2-orderSet1
-
-    packCode=int(time.time())
-    for order in orderSet:
-        newPack=PackInfo()
-        newPack.code=packCode
-        newPack.order=order
-        newPack.save()
-
-    if curUser.address=='':
-        context={"orderSet":orderSet,"addressee":"您尚未保存任何收货地址，请添加！","telephone":'',"address":''}
+def close_account(request,code,isdelete):
+    if isdelete=='True':
+        return redirect('/fe_user/usercenter_order/')
     else:
-        context={"orderSet":orderSet,"addressee":'('.decode('utf-8')+curUser.addressee+' 收)'.decode('utf-8'), "telephone": curUser.telephone, "address": curUser.address}
-    return render(request,'./fe_cart/place_order.html',context)
+        username=request.session.get('username')
+        curUser=UserInfo.objects.get(name=username)
+        if code=='':
+            orderSet2=OrderInfo.objects.filter(user_id=curUser.id,status=True)
+            orderSet2=set(orderSet2)
+            packSet=PackInfo.objects.all()
+            orderSet1=[]
+            for pack in packSet:
+                orderSet1.append(pack.order)
+            orderSet1=set(orderSet1)
+            orderSet=orderSet2-orderSet1
+
+            packCode=int(time.time())
+            for order in orderSet:
+                newPack=PackInfo()
+                newPack.code=packCode
+                newPack.order=order
+                newPack.save()
+        else:
+            packSet=PackInfo.objects.filter(code=code)
+            orderSet=[]
+            for pack in packSet:
+               orderSet.append(pack.order)
+            orderSet=set(orderSet)
+
+        if curUser.address=='':
+            context={"orderSet":orderSet,"addressee":"您尚未保存任何收货地址，请添加！","telephone":'',"address":''}
+        else:
+            context={"orderSet":orderSet,"addressee":'('.decode('utf-8')+curUser.addressee+' 收)'.decode('utf-8'), "telephone": curUser.telephone, "address": curUser.address}
+        return render(request,'./fe_cart/place_order.html',context)
 
 def over_order(request,overOrderId):
     reply={}
